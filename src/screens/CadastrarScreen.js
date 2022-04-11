@@ -1,167 +1,214 @@
 import React, { useState } from "react";
-import { RadioButton, Checkbox } from "react-native-paper";
 import {
+  Image,
+  ImageBackground,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Button,
-  ImageBackground,
-  Image,
-  Alert,
-  Pressable,
   TextInput,
+  View,
 } from "react-native";
+import { RadioButton, Checkbox } from "react-native-paper";
+import {
+  Button,
+  Paragraph,
+  Dialog,
+  Portal,
+  Provider,
+} from "react-native-paper";
 
-const CadastrarScreen = ({ navigation, route }) => {
-  const [checked, setChecked] = React.useState("first");
-  const [termos, setTermos] = React.useState(false);
-  const [email, setEmail] = React.useState(false);
+const CadastroScreen = ({ navigation }) => {
+  const [textInputLogin, setTextInputLogin] = useState("");
+  const [textInputNomeCompleto, setTextInputNomeCompleto] = useState("");
+  const [textInputSenha, setTextInputSenha] = useState("");
+  const [textInputSenhaConfirmar, setTextInputSenhaConfirmar] = useState("");
+  const [radioSexo, setRadioSexo] = useState("feminino");
+  const [checkTermo, setCheckTermo] = useState(false);
+  const [checkSpam, setCheckSpam] = useState(false);
+
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("../../assets/fiap_bg.png")}
-        style={styles.imageBackground}
-      >
-        <Image
-          style={styles.imageLogo}
-          source={require("../../assets/fiap_logo.png")}
-        />
-
-        <Text style={styles.textTitle}>Cadastrar</Text>
-        <TextInput style={styles.textInput} placeholder="Username" />
-        <TextInput style={styles.textInput} placeholder="Name" />
-        <TextInput style={styles.textInput} placeholder="Password" />
-        <TextInput style={styles.textInput} placeholder="Repeat password" />
-
-        <Text style={styles.textTitle}>Sexo</Text>
-
-        <View style={styles.secondBtn}>
-          <RadioButton
-            uncheckedColor="white"
-            color="#ee125a"
-            value="first"
-            status={checked === "first" ? "checked" : "unchecked"}
-            onPress={() => setChecked("first")}
+    <ImageBackground
+      source={require("../../assets/fiap_bg.png")}
+      style={styles.imageBackground}
+    >
+      <ScrollView>
+        <View style={styles.container}>
+          <Image
+            source={require("../../assets/fiap_logo.png")}
+            style={styles.imageLogo}
           />
-          <Text style={[styles.text, styles.test]}>Masculino</Text>
-          <RadioButton
-            uncheckedColor="white"
-            color="#ee125a"
-            value="second"
-            status={checked === "second" ? "checked" : "unchecked"}
-            onPress={() => setChecked("second")}
+          <Text style={styles.textTitle}>Cadastrar</Text>
+          <TextInput
+            value={textInputLogin}
+            onChangeText={(value) => setTextInputLogin(value)}
+            style={styles.textInput}
+            placeholder="Username"
+            placeholderTextColor="white"
           />
-          <Text style={[styles.text, styles.test]}>Feminino</Text>
+          <TextInput
+            value={textInputNomeCompleto}
+            onChangeText={(value) => setTextInputNomeCompleto(value)}
+            style={styles.textInput}
+            placeholder="Nome Completo"
+            placeholderTextColor="white"
+          />
+          <TextInput
+            value={textInputSenha}
+            onChangeText={(value) => setTextInputSenha(value)}
+            style={styles.textInput}
+            placeholder="Senha"
+            placeholderTextColor="white"
+          />
+          <TextInput
+            value={textInputSenhaConfirmar}
+            onChangeText={(value) => setTextInputSenhaConfirmar(value)}
+            style={styles.textInput}
+            placeholder="Confirmar Senha"
+            placeholderTextColor="white"
+          />
+          <View style={styles.fieldSpace}>
+            <View style={styles.formGroup}>
+              <Text style={styles.text}>Sexo:</Text>
+            </View>
+            <View style={styles.formGroup}>
+              <RadioButton
+                value="feminino"
+                status={radioSexo === "feminino" ? "checked" : "unchecked"}
+                onPress={() => setRadioSexo("feminino")}
+                uncheckedColor="white"
+                color="#ee125a"
+              />
+              <Text style={styles.textRadio}>Feminino</Text>
+            </View>
+            <View style={styles.formGroup}>
+              <RadioButton
+                value="masculino"
+                status={radioSexo === "masculino" ? "checked" : "unchecked"}
+                onPress={() => setRadioSexo("masculino")}
+                uncheckedColor="white"
+                color="#ee125a"
+              />
+              <Text style={styles.textRadio}>Masculino</Text>
+            </View>
+          </View>
+          <View style={styles.fieldSpace}>
+            <View style={styles.formGroup}>
+              <Checkbox
+                status={checkTermo ? "checked" : "unchecked"}
+                onPress={() => {
+                  setCheckTermo(!checkTermo);
+                }}
+                uncheckedColor="white"
+                color="#ee125a"
+              />
+              <Text style={styles.textRadio}>Li e concordo o termo de uso</Text>
+            </View>
+            <View style={styles.formGroup}>
+              <Checkbox
+                status={checkSpam ? "checked" : "unchecked"}
+                onPress={() => {
+                  setCheckSpam(!checkSpam);
+                }}
+                uncheckedColor="white"
+                color="#ee125a"
+              />
+              <Text style={styles.textRadio}>Aceito receber emails</Text>
+            </View>
+          </View>
+          <Pressable style={styles.button} onPress={showDialog}>
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </Pressable>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.replace("Login")}
+          >
+            <Text style={styles.buttonText}>Voltar</Text>
+          </Pressable>{" "}
+          
+          <Provider>
+            <Portal>
+              <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>Username: {textInputLogin}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </Provider>
         </View>
-
-        <View style={styles.secondBtn}>
-          <Checkbox
-            status={termos ? "checked" : "unchecked"}
-            color="#ee125a"
-            uncheckedColor="white"
-            onPress={() => {
-              setTermos(!termos);
-            }}
-          />
-          <Text style={[styles.text, styles.test]}>
-            Li e concordo com o termos de uso.
-          </Text>
-        </View>
-
-        <View style={styles.secondBtn}>
-          <Checkbox
-            status={email ? "checked" : "unchecked"}
-            color="#ee125a"
-            uncheckedColor="white"
-            onPress={() => {
-              setEmail(!email);
-            }}
-          />
-          <Text style={[styles.text, styles.test]}>
-            Aceito receber e-mails promocionais.
-          </Text>
-        </View>
-
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.replace("Login")}
-        >
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </Pressable>
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.replace("Login")}
-        >
-          <Text style={styles.buttonText}>Voltar</Text>
-        </Pressable>
-      </ImageBackground>
-    </View>
+      </ScrollView>
+    </ImageBackground>
   );
 };
+
+export default CadastroScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
   },
   imageBackground: {
     flex: 1,
-    resizeMode: "conver",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
+    resizeMode: "cover",
   },
   imageLogo: {
-    width: 150,
-    margin: 16,
     resizeMode: "contain",
-    height: 50,
+    height: 90,
+    width: "25%",
   },
   text: {
-    fontSize: 18,
     color: "white",
+  },
+  textRadio: {
+    color: "white",
+    marginTop: 8,
   },
   textTitle: {
     color: "white",
-    fontSize: 26,
+    fontSize: 30,
     fontWeight: "bold",
-  },
-  textInput: {
-    height: 60,
-    width: "100%",
-    margin: 12,
-    borderWidth: 1,
-    borderColor: "rgba(60, 60, 60, 1)",
-    borderRadius: 3,
-    color: "white",
-    fontSize: 15,
-    backgroundColor: "rgba(60, 60, 60, 0.5)",
+    margin: 16,
   },
   button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 5,
-    elevation: 3,
     backgroundColor: "#ee125a",
-    marginTop: 8,
     width: "100%",
-  },
-  secondBtn: {
-    width: "100%",
-    flexDirection: "row",
-    //justifyContent : 'space-between',
-    marginTop: 10,
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 8,
   },
   buttonText: {
     color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
   },
-  test: {
-    lineHeight: 35,
+  textInput: {
+    backgroundColor: "rgba(60,60,60,0.5)",
+    padding: 16,
+    width: "100%",
+    marginBottom: 8,
+    color: "white",
+  },
+  buttonsHorizontal: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  formGroup: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  fieldSpace: {
+    width: "100%",
+    marginBottom: 8,
   },
 });
-
-export default CadastrarScreen;

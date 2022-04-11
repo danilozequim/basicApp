@@ -1,18 +1,17 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider as PaperProvider } from 'react-native-paper';
-import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider as PaperProvider } from "react-native-paper";
+import React from "react";
 
-import { MainStackNavigator } from './src/navigation/StackNavigators';
+import { MainStackNavigator } from "./src/navigation/StackNavigators";
 
 const App = () => {
   return (
-    //<LoginScreen />
     <NavigationContainer>
       <PaperProvider>
-       <MainStackNavigator />
+        <MainStackNavigator />
       </PaperProvider>
     </NavigationContainer>
   );
-}
+};
 
 export default App;

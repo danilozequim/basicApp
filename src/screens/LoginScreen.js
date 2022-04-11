@@ -1,124 +1,102 @@
-import React from 'react';
-import {
-  StyleSheet, 
-  Text, 
-  View,
-  Button,
-  ImageBackground,
-  Image,
-  Alert,
-  Pressable,
-  SafeAreaView,
-  TextInput,
-} from 'react-native';
+import React, { useState } from 'react';
+import { Image, ImageBackground, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import InputComponent from '../components/InputComponent';
+import PressableComponent from '../components/PressableComponent';
 
 const LoginScreen = ({ navigation }) => {
+  const [textInputLogin, setTextInputLogin] = useState('');
+  const [textInputSenha, setTextInputSenha] = useState('');
 
-    const [text, onChangeText] = React.useState("Username");
-    
-
-    return (
+  return (
+    <ImageBackground source={require('../../assets/fiap_bg.png')} style={styles.imageBackground}>
         <View style={styles.container}>
-            <ImageBackground source={require('../../assets/fiap_bg.png')} style={styles.imageBackground}>
-                <Image
-                    style={styles.imageLogo}
-                    source={require('../../assets/fiap_logo.png')}
-                />
+            <Image source={require('../../assets/fiap_logo.png')} style={styles.imageLogo}/>
+            <Text style={styles.textTitle}>Entrar</Text>
+            <InputComponent
+              value={textInputLogin}
+              onChangeText={(value) => setTextInputLogin(value)}
+              placeholder='Username'
+            />
+            <InputComponent
+              value={textInputSenha}
+              onChangeText={(value) => setTextInputSenha(value)}
+              placeholder='Senha'
+              
+            />
+            <Pressable style={styles.button} onPress={() => navigation.replace('Cadastrar')}>
+                <Text style={styles.buttonText}>Entrar</Text>
+            </Pressable>
 
-                <Text style={styles.textTitle}>Entrar</Text>
-                
-                
-                <TextInput style={styles.textInput}   placeholder='Username'/>
-                <TextInput style={styles.textInput}  placeholder='Password' />
-                {/*onChangeText={onChangeText}
-                value={text}*/}
-                
-                <Pressable style={styles.button} onPress={()=> navigation.replace('Cadastrar')}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </Pressable>
+              <PressableComponent
+                text="aloalo"
+                onPress={()=>navigation.replace('Cadastrar')}
+              />
 
-{/*<Button title='ENTRAR' style={styles.teste} onPress={() => navigation.replace('Cadastrar')} />*/}
-
-                <View style={styles.secondBtn}>
-                <Text style={styles.text} onPress={()=> navigation.replace('Cadastrar')} >Cadastrar</Text>
-
-                <Text style={styles.text}>Esqueci a senha</Text>
-
-                </View>
-            
-            </ImageBackground>
-
-            
-
-
+              {console.log(navigation)}
+            <View style={styles.buttonsHorizontal}>
+              <Pressable style={styles.buttonLink} onPress={() => navigation.replace('Cadastrar')}>
+                <Text style={styles.text}>Cadastrar</Text>
+              </Pressable>
+              <Pressable style={styles.buttonLink} onPress={() => navigation.replace('Cadastrar')}>
+                <Text style={styles.text}>
+                  Esqueceu sua senha
+                </Text>
+              </Pressable>
+            </View>
         </View>
-    );
-    }
-
-    const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    imageBackground: {
-        flex: 1,
-        resizeMode: 'conver',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 16,
-    },
-    imageLogo: {
-        width: 150,
-        margin: 16,
-        resizeMode: 'contain',
-        height: 50,
-    },
-    text: {
-        fontSize: 18,
-        color: 'white',
-        
-    },
-    secondBtn :{
-        width: '100%',
-        flexDirection: "row",
-        justifyContent : 'space-between',
-        marginTop: 10,
-    },
-    textTitle: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: 'white',
-    },
-    textInput: {
-        height: 60,
-        width: '100%',
-        margin: 12,
-        textAlign: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(60, 60, 60, 1)',
-        borderRadius: 3,
-        color: 'white',
-        fontSize: 15,
-        backgroundColor: 'rgba(60, 60, 60, 0.5)',
-      },
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 5,
-        elevation: 3,
-        backgroundColor: '#ee125a',
-        marginTop: 8,
-        width: '100%',
-    },
-    teste:{
-        color: 'orange',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
-    }
-    });
+    </ImageBackground>
+  );
+}
 
 export default LoginScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  imageLogo: {
+    resizeMode: 'contain',
+    height: 90,
+    width: '50%',
+  },
+  text: {
+    color: 'white'
+  },
+  textTitle: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    margin: 16,
+  },
+  button: {
+    backgroundColor: '#ee125a',
+    width: '100%',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+    marginTop: 16,
+  },
+  buttonText: {
+      color: 'white',
+  },
+  textInput: {
+    backgroundColor: 'rgba(60,60,60,0.5)',
+    padding: 16,
+    width: '100%',
+    marginBottom: 8,
+    color: 'white',
+  },
+  buttonsHorizontal: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+});
